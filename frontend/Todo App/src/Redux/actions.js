@@ -1,5 +1,3 @@
-
-
 import axios from 'axios';
 
 export const FETCH_TASKS_REQUEST = 'FETCH_TASKS_REQUEST';
@@ -31,6 +29,7 @@ export const fetchTasks = () => {
     axios.get(API_BASE_URL)
       .then(response => {
         const tasks = response.data;
+        console.log(tasks);
         dispatch(fetchTasksSuccess(tasks));
       })
       .catch(error => {
@@ -42,9 +41,10 @@ export const fetchTasks = () => {
 
 export const addTask = title => {
   return dispatch => {
-    axios.post(API_BASE_URL, { title })
+    axios.post(`${API_BASE_URL}/add`, { title })
       .then(response => {
         const task = response.data;
+        console.log(task);
         dispatch({
           type: ADD_TASK,
           payload: task,
@@ -56,14 +56,15 @@ export const addTask = title => {
   };
 };
 
-export const toggleTask = id => {
+export const toggleTask = (id, status) => {
   return dispatch => {
-    axios.patch(`${API_BASE_URL}/${id}`)
+    axios.patch(`${API_BASE_URL}/update/${id}`, { status: status })
       .then(response => {
         const updatedTask = response.data;
+        console.log(updatedTask.updatedTask);
         dispatch({
           type: TOGGLE_TASK,
-          payload: updatedTask,
+          payload: updatedTask.updatedTask,
         });
       })
       .catch(error => {
@@ -74,7 +75,7 @@ export const toggleTask = id => {
 
 export const deleteTask = id => {
   return dispatch => {
-    axios.delete(`${API_BASE_URL}/${id}`)
+    axios.delete(`${API_BASE_URL}/delete/${id}`)
       .then(() => {
         dispatch({
           type: DELETE_TASK,
@@ -85,4 +86,4 @@ export const deleteTask = id => {
         console.error('Error deleting task:', error);
       });
   };
-};
+}

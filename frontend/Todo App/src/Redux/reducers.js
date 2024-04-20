@@ -35,10 +35,13 @@ import { ADD_TASK, DELETE_TASK, FETCH_TASKS_FAILURE, FETCH_TASKS_REQUEST, FETCH_
           tasks: [...state.tasks, action.payload],
         };
       case TOGGLE_TASK:
+        // console.log(action.payload);
+        // console.log(state.tasks.tasks);
+        // console.log(state);
         return {
           ...state,
-          tasks: state.tasks.map(task =>
-            task.id === action.payload.id ? action.payload : task
+          tasks: state.tasks.tasks.map(task =>
+            task._id === action.payload._id ? action.payload : task
           ),
         };
       case DELETE_TASK:
